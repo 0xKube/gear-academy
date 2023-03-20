@@ -1,0 +1,1 @@
+{"rustc":18443472828410010142,"features":"[\"std\"]","target":3823184707828413431,"profile":6269190295429226618,"path":696566876268104630,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"release/.fingerprint/wasmparser-nostd-a94a6857e215087b/dep-lib-wasmparser-nostd"}}],"rustflags":[],"metadata":2759986635450427271,"config":2202906307356721367,"compile_kind":0}

@@ -1,0 +1,25 @@
+[0m[0m[1m[32m   Compiling[0m tam-io v0.1.0 (/Users/ys/Documents/Rust/Tamagochi_1/tam-io)
+[0m[1m[33mwarning[0m[0m[1m: unused import: `ActorId`[0m
+[0m [0m[0m[1m[38;5;12m--> [0m[0m/Users/ys/Documents/Rust/Tamagochi_1/tam-io/src/lib.rs:5:24[0m
+[0m  [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m5[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0muse gstd::{prelude::*, ActorId};[0m
+[0m  [0m[0m[1m[38;5;12m| [0m[0m                       [0m[0m[1m[33m^^^^^^^[0m
+[0m  [0m[0m[1m[38;5;12m|[0m
+[0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_imports)]` on by default[0m
+
+[0m[0m[1m[33mwarning[0m[1m:[0m `tam-io` (lib) generated 1 warning (run `cargo fix --lib -p tam-io` to apply 1 suggestion)
+[0m[0m[1m[32m   Compiling[0m tamagochi_1 v0.1.0 (/Users/ys/Documents/Rust/Tamagochi_1)
+[0m[1m[33mwarning[0m[0m[1m: unused imports: `ActorId`, `self`[0m
+[0m [0m[0m[1m[38;5;12m--> [0m[0m/Users/ys/Documents/Rust/Tamagochi_1/src/lib.rs:5:12[0m
+[0m  [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m5[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    exec::{self, block_timestamp},[0m
+[0m  [0m[0m[1m[38;5;12m| [0m[0m           [0m[0m[1m[33m^^^^[0m
+[0m[1m[38;5;12m...[0m
+[0m[1m[38;5;12m8[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    ActorId,[0m
+[0m  [0m[0m[1m[38;5;12m| [0m[0m    [0m[0m[1m[33m^^^^^^^[0m
+[0m  [0m[0m[1m[38;5;12m|[0m
+[0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_imports)]` on by default[0m
+
+[0m[0m[1m[33mwarning[0m[1m:[0m `tamagochi_1` (lib) generated 1 warning (run `cargo fix --lib -p tamagochi_1` to apply 1 suggestion)
+[0m[0m[1m[32m   Compiling[0m tamagochi_1-wasm v0.1.0 (/Users/ys/Documents/Rust/Tamagochi_1/target/release/build/tamagochi_1-48558992c8ca8b27/out)
+[0m[0m[1m[32m    Finished[0m release [optimized] target(s) in 2.14s

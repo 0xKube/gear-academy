@@ -1,0 +1,13 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/getrandom-529f8262df5b1778.rmeta: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error_impls.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util_libc.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/use_file.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/macos.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/libgetrandom-529f8262df5b1778.rlib: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error_impls.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util_libc.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/use_file.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/macos.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/getrandom-529f8262df5b1778.d: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error_impls.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util_libc.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/use_file.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/macos.rs
+
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/lib.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/error_impls.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/util_libc.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/use_file.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.8/src/macos.rs:

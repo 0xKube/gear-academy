@@ -1,0 +1,1 @@
+{"rustc":13473331851569528653,"features":"[\"serde\", \"serde1\"]","target":2297296889237502566,"profile":12321446146528634949,"path":8217016877138997897,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"release/.fingerprint/camino-515a1022ec1096bd/dep-build-script-build-script-build"}}],"rustflags":[],"metadata":8220988225220673478,"config":2202906307356721367,"compile_kind":0}

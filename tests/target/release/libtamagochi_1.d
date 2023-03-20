@@ -1,0 +1,1 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/libtamagochi_1.rlib: /Users/ys/Documents/Rust/Tamagochi_1/build.rs /Users/ys/Documents/Rust/Tamagochi_1/src/lib.rs /Users/ys/Documents/Rust/Tamagochi_1/tam-io/src/lib.rs

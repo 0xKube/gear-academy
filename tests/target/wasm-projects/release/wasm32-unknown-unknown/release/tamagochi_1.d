@@ -1,0 +1,1 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/wasm32-unknown-unknown/release/tamagochi_1.wasm: /Users/ys/Documents/Rust/Tamagochi_1/build.rs /Users/ys/Documents/Rust/Tamagochi_1/src/lib.rs /Users/ys/Documents/Rust/Tamagochi_1/tam-io/src/lib.rs /Users/ys/Documents/Rust/Tamagochi_1/target/release/build/tamagochi_1-48558992c8ca8b27/out/src/lib.rs

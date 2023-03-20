@@ -1,0 +1,12 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/io_lifetimes-443cd0a808047089.rmeta: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/portability.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/traits.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/example_ffi.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/raw.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/views.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/libio_lifetimes-443cd0a808047089.rlib: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/portability.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/traits.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/example_ffi.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/raw.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/views.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/release/deps/io_lifetimes-443cd0a808047089.d: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/portability.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/traits.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/example_ffi.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/raw.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/views.rs
+
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/lib.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/portability.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/traits.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/example_ffi.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/raw.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.6/src/views.rs:

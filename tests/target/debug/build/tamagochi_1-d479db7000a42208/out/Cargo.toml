@@ -1,0 +1,28 @@
+[dependencies.orig-project]
+default-features = false
+package = "tamagochi_1"
+path = "/Users/ys/Documents/Rust/Tamagochi_1"
+
+[features]
+
+[lib]
+crate-type = ["cdylib"]
+name = "tamagochi_1"
+
+[package]
+edition = "2021"
+name = "tamagochi_1-wasm"
+version = "0.1.0"
+
+[profile.dev]
+lto = true
+opt-level = "s"
+
+[profile.production]
+inherits = "release"
+
+[profile.release]
+lto = true
+opt-level = "s"
+
+[workspace]

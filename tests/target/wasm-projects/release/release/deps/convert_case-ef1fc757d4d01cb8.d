@@ -1,0 +1,9 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/convert_case-ef1fc757d4d01cb8.rmeta: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/case.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/words.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/libconvert_case-ef1fc757d4d01cb8.rlib: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/case.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/words.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/convert_case-ef1fc757d4d01cb8.d: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/case.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/words.rs
+
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/lib.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/case.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/convert_case-0.4.0/src/words.rs:

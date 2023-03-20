@@ -1,0 +1,8 @@
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/uint-fabf00dda4ea4958.rmeta: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/uint.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/libuint-fabf00dda4ea4958.rlib: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/uint.rs
+
+/Users/ys/Documents/Rust/Tamagochi_1/target/wasm-projects/release/release/deps/uint-fabf00dda4ea4958.d: /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/lib.rs /Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/uint.rs
+
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/lib.rs:
+/Users/ys/.cargo/registry/src/github.com-1ecc6299db9ec823/uint-0.9.5/src/uint.rs:
