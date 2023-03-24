@@ -7,9 +7,9 @@ use gstd::{
     prelude::*,
     ActorId,
 };
-static mut GREETING: Option<String> = None;
+static mut TAMAGOCHI: Option<Tamagotchi> = None;
 
-#[derive(Encode, Decode, TypeInfo)]
+#[derive(Encode, Decode, TypeInfo, Default)]
 pub struct Tamagotchi {
     pub name: String,
     pub date_of_birth: u64,
@@ -32,29 +32,32 @@ pub enum TmgEvent {
 
 #[no_mangle]
 extern "C" fn init() {
-    let greeting = String::from_utf8(msg::load_bytes().expect("Can't load init message"))
+    let tname = String::from_utf8(msg::load_bytes().expect("Can't load init message"))
         .expect("Invalid message");
-    debug!("Program was initialized with message {:?}", greeting);
-    unsafe { GREETING = Some(greeting) };
+    let character = Tamagotchi {
+        name: tname,
+        date_of_birth: (block_timestamp()),
+    };
+    unsafe { TAMAGOCHI = Some(character) };
 }
 
 #[no_mangle]
 extern "C" fn handle() {
     let inquery: TmgAction = msg::load().expect("Error in handling msg");
-    debug!("Program was initialized with message {:?}", inquery);
+    let character = unsafe { TAMAGOCHI.get_or_insert(Default::default()) };
 
-    let character = Tamagotchi {
-        name: "Valera".to_owned(),
-        date_of_birth: (block_timestamp()),
-    };
+    debug!("Program was initialized with message {:?}", inquery);
 
     match inquery {
         TmgAction::Age => {
-            msg::reply(TmgEvent::Age(character.date_of_birth), 0)
-                .expect("Error in sending Hello message to account");
+            msg::reply(
+                TmgEvent::Age(block_timestamp() - character.date_of_birth),
+                0,
+            )
+            .expect("Error in sending Hello message to account");
         }
         TmgAction::Name => {
-            msg::reply(TmgEvent::Name(character.name), 0)
+            msg::reply(TmgEvent::Name(character.name.to_string()), 0)
                 .expect("Error in sending Hello message to account");
         }
     }
@@ -62,8 +65,8 @@ extern "C" fn handle() {
 
 #[no_mangle]
 extern "C" fn state() {
-    let greeting = unsafe { GREETING.as_ref().expect("The contract is not initialized") };
-    msg::reply(greeting, 0).expect("Failed to share state");
+    let tamagotchi = unsafe { TAMAGOCHI.as_ref().expect("The contract is not initialized") };
+    msg::reply(tamagotchi, 0).expect("Failed to share state");
 }
 
 #[no_mangle]
