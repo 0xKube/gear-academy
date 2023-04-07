@@ -20,6 +20,7 @@ pub struct Tamagotchi {
     pub last_sleep: u64,
     pub last_feed: u64,
     pub last_play: u64,
+    pub approved_account: Option<ActorId>,
 }
 
 const HUNGER_PER_BLOCK: u32 = 1;
@@ -36,12 +37,21 @@ pub enum TmgAction {
     Sleep,
     Feed,
     Play,
+    Transfer(ActorId),
+    Approve(ActorId),
+    RevokeApproval,
 }
 
 #[derive(Debug, Encode, Decode, TypeInfo)]
 pub enum TmgEvent {
     Name(String),
     Age(u64),
+    Fed,
+    Entertained,
+    Slept,
+    Transfer(ActorId),
+    Approve(ActorId),
+    RevokeApproval,
 }
 //The Tamagochi program should accept the following messages:
 //- Name - the program answers the name of the Tamagochi;
@@ -78,6 +88,7 @@ extern "C" fn init() {
         last_sleep: block_timestamp(),
         last_feed: block_timestamp(),
         last_play: block_timestamp(),
+        approved_account: None,
     };
     unsafe { TAMAGOCHI = Some(character) };
 }
@@ -115,6 +126,29 @@ extern "C" fn handle() {
         TmgAction::Play => {
             character.happy = (character.happy + FILL_PER_ENTERTAINMENT).min(10000);
             character.last_play = block_timestamp();
+        }
+        TmgAction::Transfer(new_owner) => {
+            if character.owner == msg::source() || character.approved_account == Some(msg::source())
+            {
+                character.owner = new_owner;
+                character.approved_account = None;
+            } else {
+                panic!("Only the owner or an approved account can transfer ownership");
+            }
+        }
+        TmgAction::Approve(allowed_account) => {
+            if character.owner == msg::source() {
+                character.approved_account = Some(allowed_account);
+            } else {
+                panic!("Only the owner can approve an account");
+            }
+        }
+        TmgAction::RevokeApproval => {
+            if character.owner == msg::source() {
+                character.approved_account = None;
+            } else {
+                panic!("Only the owner can revoke approval");
+            }
         }
     }
 }
