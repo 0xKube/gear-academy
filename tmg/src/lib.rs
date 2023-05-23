@@ -1,13 +1,20 @@
 #![no_std]
+use ft_main_io::{FTokenAction, FTokenEvent, LogicAction};
+use gstd::exec::block_timestamp;
+use gstd::{exec, msg, prelude::*, ActorId};
+pub mod messages;
+use messages::*;
+use store_io::{AttributeId, AttributeStore, StoreAction, StoreEvent, TransactionId};
+use tam_io::*;
 
-use gstd::{
-    debug,
-    exec::{self, block_timestamp},
-    msg,
-    prelude::*,
-    ActorId,
-};
 static mut TAMAGOCHI: Option<Tamagotchi> = None;
+
+const HUNGER_PER_BLOCK: u32 = 1;
+const ENERGY_PER_BLOCK: u32 = 2;
+const BOREDOM_PER_BLOCK: u32 = 2;
+const FILL_PER_SLEEP: u32 = 1000;
+const FILL_PER_FEED: u32 = 1000;
+const FILL_PER_ENTERTAINMENT: u32 = 1000;
 
 #[derive(Encode, Decode, TypeInfo, Default)]
 pub struct Tamagotchi {
@@ -21,41 +28,10 @@ pub struct Tamagotchi {
     pub last_feed: u64,
     pub last_play: u64,
     pub approved_account: Option<ActorId>,
+    pub ft_contract_id: Option<ActorId>,
+    pub ft_transaction_id: TransactionId,
+    pub approve_transaction: Option<(TransactionId, ActorId, u128)>,
 }
-
-const HUNGER_PER_BLOCK: u32 = 1;
-const ENERGY_PER_BLOCK: u32 = 2;
-const BOREDOM_PER_BLOCK: u32 = 2;
-const FILL_PER_SLEEP: u32 = 1000;
-const FILL_PER_FEED: u32 = 1000;
-const FILL_PER_ENTERTAINMENT: u32 = 1000;
-
-#[derive(Debug, Encode, Decode, TypeInfo)]
-pub enum TmgAction {
-    Name,
-    Age,
-    Sleep,
-    Feed,
-    Play,
-    Transfer(ActorId),
-    Approve(ActorId),
-    RevokeApproval,
-}
-
-#[derive(Debug, Encode, Decode, TypeInfo)]
-pub enum TmgEvent {
-    Name(String),
-    Age(u64),
-    Fed,
-    Entertained,
-    Slept,
-    Transfer(ActorId),
-    Approve(ActorId),
-    RevokeApproval,
-}
-//The Tamagochi program should accept the following messages:
-//- Name - the program answers the name of the Tamagochi;
-// - Age - the program answers about the age of the Tamagochi.
 
 impl Tamagotchi {
     fn update_states(&mut self) {
@@ -71,6 +47,71 @@ impl Tamagotchi {
         self.fed = self.fed.saturating_sub(hunger_increase as u32);
         self.rested = self.rested.saturating_sub(energy_decrease as u32);
         self.happy = self.happy.saturating_sub(boredom_increase as u32);
+    }
+
+    fn set_ftoken_contract(&mut self, ft_contract_id: ActorId) {
+        self.ft_contract_id = Some(ft_contract_id);
+    }
+
+    async fn buy_attribute(&mut self, store_id: ActorId, attribute_id: AttributeId) {
+        let attributes = get_attributes(&store_id).await;
+        if attributes.contains(&attribute_id) {
+            panic!("You have already bought that attribute");
+        }
+        let result = buy_attribute(&store_id, attribute_id).await;
+        match result {
+            Ok(_) => msg::reply(TmgEvent::AttributeBought(attribute_id), 0)
+                .expect("Error in a reply `TmgEvent::AttributeBought`"),
+            Err(StoreEvent::CompletePrevTx(prev_attribute_id)) => {
+                msg::reply(TmgEvent::CompletePrevPurchase(prev_attribute_id), 0)
+                    .expect("Error in a reply `TmgEvent::CompletePrevPurchase`")
+            }
+            _ => msg::reply(TmgEvent::ErrorDuringPurchase, 0)
+                .expect("Error in a reply `TmgEvent::ErrorDuringPurchase`"),
+        };
+    }
+
+    async fn approve_tokens(&mut self, account: &ActorId, amount: u128) {
+        let (transaction_id, account, amount) = if let Some((
+            ft_transaction_id,
+            prev_account,
+            prev_amount,
+        )) = self.approve_transaction
+        {
+            if prev_account != *account || prev_amount != amount {
+                panic!("Please complete the previous tx");
+            } else {
+                (ft_transaction_id, prev_account, prev_amount)
+            }
+        } else {
+            let ft_transaction_id = self.ft_transaction_id;
+            self.ft_transaction_id = self.ft_transaction_id.wrapping_add(1);
+            self.approve_transaction = Some((ft_transaction_id, *account, amount));
+            (ft_transaction_id, *account, amount)
+        };
+
+        let reply = msg::send_for_reply_as::<_, FTokenEvent>(
+            self.ft_contract_id.unwrap(),
+            FTokenAction::Message {
+                transaction_id,
+                payload: LogicAction::Approve {
+                    approved_account: account,
+                    amount,
+                },
+            },
+            0,
+        )
+        .expect("Error in sending a message `FTokenAction::Message`")
+        .await;
+
+        self.approve_transaction = None;
+
+        match reply {
+            Ok(_) => msg::reply(TmgEvent::Approve(account), 0)
+                .expect("Error in a reply `TmgEvent::Approve`"),
+            Err(_) => msg::reply(TmgEvent::ApprovalError, 0)
+                .expect("Error in a reply `TmgEvent::ApprovalError`"),
+        };
     }
 }
 
@@ -89,17 +130,16 @@ extern "C" fn init() {
         last_feed: block_timestamp(),
         last_play: block_timestamp(),
         approved_account: None,
+        ..Default::default()
     };
     unsafe { TAMAGOCHI = Some(character) };
 }
 
-#[no_mangle]
-extern "C" fn handle() {
+#[gstd::async_main]
+async fn main() {
     let inquery: TmgAction = msg::load().expect("Error in handling msg");
     let character: &mut Tamagotchi =
         unsafe { TAMAGOCHI.as_mut().expect("The contract is not initialized") };
-
-    debug!("Program was initialized with message {:?}", inquery);
 
     character.update_states();
 
@@ -150,6 +190,16 @@ extern "C" fn handle() {
                 panic!("Only the owner can revoke approval");
             }
         }
+        TmgAction::SetFTokenContract(ft_contract_id) => {
+            character.set_ftoken_contract(ft_contract_id)
+        }
+        TmgAction::ApproveTokens { account, amount } => {
+            character.approve_tokens(&account, amount).await
+        }
+        TmgAction::BuyAttribute {
+            store_id,
+            attribute_id,
+        } => character.buy_attribute(store_id, attribute_id).await,
     }
 }
 
