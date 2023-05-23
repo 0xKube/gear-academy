@@ -35,18 +35,21 @@ pub async fn buy_attribute(
             if success {
                 Ok(())
             } else {
-                Err(StoreEvent::ErrorDuringPurchase)
+                Err(StoreEvent::CompletePrevTx {
+                    attribute_id: (attribute_id),
+                })
             }
         }
-        Ok(StoreEvent::CompletePrevTx(attribute_id)) => {
-            Err(StoreEvent::CompletePrevTx(attribute_id))
+        Ok(StoreEvent::CompletePrevTx { attribute_id }) => {
+            Err(StoreEvent::CompletePrevTx { attribute_id })
         }
-        _ => Err(StoreEvent::ErrorDuringPurchase),
+        _ => Err(StoreEvent::CompletePrevTx {
+            attribute_id: (attribute_id),
+        }),
     }
 }
 
-//#[derive(Encode, Decode)]
-//pub enum StoreEvent {
-//  ErrorDuringPurchase,
-//CompletePrevTx(AttributeId),
-//}
+pub enum StoreError {
+    ErrorDuringPurchase,
+    CompletePrevTx(AttributeId),
+}

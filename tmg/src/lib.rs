@@ -62,8 +62,8 @@ impl Tamagotchi {
         match result {
             Ok(_) => msg::reply(TmgEvent::AttributeBought(attribute_id), 0)
                 .expect("Error in a reply `TmgEvent::AttributeBought`"),
-            Err(StoreEvent::CompletePrevTx(prev_attribute_id)) => {
-                msg::reply(TmgEvent::CompletePrevPurchase(prev_attribute_id), 0)
+            Err(StoreEvent::CompletePrevTx { attribute_id }) => {
+                msg::reply(TmgEvent::CompletePrevPurchase(attribute_id), 0)
                     .expect("Error in a reply `TmgEvent::CompletePrevPurchase`")
             }
             _ => msg::reply(TmgEvent::ErrorDuringPurchase, 0)
