@@ -1,4 +1,6 @@
 #![no_std]
+use core::char::MAX;
+
 use ft_main_io::{FTokenAction, FTokenEvent, LogicAction};
 use gstd::exec::block_timestamp;
 use gstd::{exec, msg, prelude::*, ActorId};
@@ -39,34 +41,12 @@ pub struct Tamagotchi {
 impl Tamagotchi {
     fn update_states(&mut self) {
         let current_block = block_timestamp();
-        let blocks_since_last_sleep = current_block - self.last_sleep;
-        let blocks_since_last_feed = current_block - self.last_feed;
-        let blocks_since_last_play = current_block - self.last_play;
 
-        self.fed += FILL_PER_FEED
-            - (HUNGER_PER_BLOCK * ((exec::block_timestamp() - blocks_since_last_feed) / 1_000));
-        self.rested += FILL_PER_SLEEP
-            - (ENERGY_PER_BLOCK * (exec::block_timestamp() - blocks_since_last_sleep / 1000));
-        self.happy += BOREDOM_PER_BLOCK
-            - (BOREDOM_PER_BLOCK * (exec::block_timestamp() - blocks_since_last_play / 1000));
+        self.fed -= HUNGER_PER_BLOCK * ((current_block - self.last_feed) / 1_000);
 
-        self.fed = if self.fed > MAX_VALUE {
-            MAX_VALUE
-        } else {
-            self.fed
-        };
+        self.rested -= ENERGY_PER_BLOCK * ((current_block - self.last_sleep) / 1_000);
 
-        self.rested = if self.rested > MAX_VALUE {
-            MAX_VALUE
-        } else {
-            self.rested
-        };
-
-        self.happy = if self.happy > MAX_VALUE {
-            MAX_VALUE
-        } else {
-            self.happy
-        };
+        self.happy -= BOREDOM_PER_BLOCK * ((current_block - self.last_play) / 1_000);
     }
 
     fn set_ftoken_contract(&mut self, ft_contract_id: ActorId) {
@@ -155,16 +135,32 @@ async fn main() {
                 .expect("Error in sending Hello message to account");
         }
         TmgAction::Sleep => {
-            character.rested = (character.rested + FILL_PER_SLEEP).min(10000);
-            character.last_sleep = block_timestamp();
+            if character.rested + FILL_PER_SLEEP > MAX_VALUE {
+                character.rested = MAX_VALUE;
+                character.last_sleep = block_timestamp();
+            } else {
+                character.rested = character.rested + FILL_PER_SLEEP;
+                character.last_sleep = block_timestamp();
+            }
         }
         TmgAction::Feed => {
-            character.fed = (character.fed + FILL_PER_FEED).min(10000);
-            character.last_feed = block_timestamp();
+            if character.fed + FILL_PER_FEED > MAX_VALUE {
+                character.fed = MAX_VALUE;
+                character.last_feed = block_timestamp();
+            } else {
+                character.fed = character.fed + FILL_PER_FEED;
+                character.last_feed = block_timestamp();
+            }
         }
+
         TmgAction::Play => {
-            character.happy = (character.happy + FILL_PER_ENTERTAINMENT).min(10000);
-            character.last_play = block_timestamp();
+            if character.happy + FILL_PER_ENTERTAINMENT > MAX_VALUE {
+                character.happy = MAX_VALUE;
+                character.last_play = block_timestamp();
+            } else {
+                character.happy = character.happy + FILL_PER_ENTERTAINMENT;
+                character.last_play = block_timestamp();
+            }
         }
         TmgAction::Transfer(new_owner) => {
             if character.owner == msg::source() || character.approved_account == Some(msg::source())
