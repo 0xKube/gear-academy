@@ -1,0 +1,42 @@
+[package]
+name = "tamagochi_1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gstd = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+hashbrown = "0.13"
+parity-scale-codec = { version = "3", default-features = false }
+scale-info = { version = "2", default-features = false }
+tam-io = { path = "tam-io" }
+
+ft-main-io = { git = "https://github.com/gear-dapps/sharded-fungible-token.git", tag = "2.1.1" }
+store-io = { git = "https://github.com/gear-dapps/smart-contract-academy.git"  }
+
+
+[build-dependencies]
+gear-wasm-builder =  { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+tam-io = { path = "tam-io" }
+
+[dev-dependencies]
+state = { path = "state"}
+gtest = { git = "https://github.com/gear-tech/gear.git", branch = "testnet"}
+gstd = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68", features = ["debug"] }
+tokio = "1"
+gclient = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+
+[features]
+# Used for inserting constants with WASM binaries (NOT paths) of the contract in
+# the root crate. Usually these constants used in gclient tests instead of
+# strings with paths to the binaries in the "target" directory. If you don't
+# like this approach or don't use gclient tests, you can freely remove this
+# feature from here and from the rest of the code.
+binary-vendor = []
+default = ["binary-vendor"]
+
+
+[workspace]
+# It's necessary to include all metawasm crates in the workspace section,
+# otherwise they'll be ignored by Cargo and won't be built.
+members = ["state"]
