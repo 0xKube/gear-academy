@@ -13,19 +13,15 @@ pub mod metafns {
 
     pub fn current_state(state: State) -> TmgCurrentState {
         let fed = state.fed.saturating_sub(
-            HUNGER_PER_BLOCK * ((exec::block_timestamp() - state.fed_block) / 1_000),
+            HUNGER_PER_BLOCK * ((exec::block_timestamp() - state.last_feed) / 1_000),
         );
-        let entertained = state.entertained.saturating_sub(
-            BOREDOM_PER_BLOCK * ((exec::block_timestamp() - state.entertained_block) / 1_000),
+        let happy = state.happy.saturating_sub(
+            BOREDOM_PER_BLOCK * ((exec::block_timestamp() - state.last_play) / 1_000),
         );
         let rested = state.rested.saturating_sub(
-            ENERGY_PER_BLOCK * ((exec::block_timestamp() - state.rested_block) / 1_000),
+            ENERGY_PER_BLOCK * ((exec::block_timestamp() - state.last_sleep) / 1_000),
         );
-        let current_state = TmgCurrentState {
-            fed,
-            entertained,
-            rested,
-        };
+        let current_state = TmgCurrentState { fed, happy, rested };
         current_state
     }
 }
@@ -33,6 +29,6 @@ pub mod metafns {
 #[derive(Encode, Decode, TypeInfo)]
 pub struct TmgCurrentState {
     fed: u64,
-    entertained: u64,
+    happy: u64,
     rested: u64,
 }

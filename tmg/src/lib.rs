@@ -9,21 +9,24 @@ use tam_io::*;
 
 static mut TAMAGOCHI: Option<Tamagotchi> = None;
 
-const HUNGER_PER_BLOCK: u32 = 1;
-const ENERGY_PER_BLOCK: u32 = 2;
-const BOREDOM_PER_BLOCK: u32 = 2;
-const FILL_PER_SLEEP: u32 = 1000;
-const FILL_PER_FEED: u32 = 1000;
-const FILL_PER_ENTERTAINMENT: u32 = 1000;
+const HUNGER_PER_BLOCK: u64 = 1;
+const ENERGY_PER_BLOCK: u64 = 2;
+const BOREDOM_PER_BLOCK: u64 = 2;
+
+pub const FILL_PER_FEED: u64 = 2_000;
+pub const FILL_PER_ENTERTAINMENT: u64 = 2_000;
+pub const FILL_PER_SLEEP: u64 = 2_000;
+
+pub const MAX_VALUE: u64 = 10_000;
 
 #[derive(Encode, Decode, TypeInfo, Default)]
 pub struct Tamagotchi {
     pub owner: ActorId,
     pub name: String,
     pub date_of_birth: u64,
-    pub fed: u32,
-    pub happy: u32,
-    pub rested: u32,
+    pub fed: u64,
+    pub happy: u64,
+    pub rested: u64,
     pub last_sleep: u64,
     pub last_feed: u64,
     pub last_play: u64,
@@ -40,13 +43,30 @@ impl Tamagotchi {
         let blocks_since_last_feed = current_block - self.last_feed;
         let blocks_since_last_play = current_block - self.last_play;
 
-        let hunger_increase = blocks_since_last_feed * HUNGER_PER_BLOCK as u64;
-        let energy_decrease = blocks_since_last_sleep * ENERGY_PER_BLOCK as u64;
-        let boredom_increase = blocks_since_last_play * BOREDOM_PER_BLOCK as u64;
+        self.fed += FILL_PER_FEED
+            - (HUNGER_PER_BLOCK * ((exec::block_timestamp() - blocks_since_last_feed) / 1_000));
+        self.rested += FILL_PER_SLEEP
+            - (ENERGY_PER_BLOCK * (exec::block_timestamp() - blocks_since_last_sleep / 1000));
+        self.happy += BOREDOM_PER_BLOCK
+            - (BOREDOM_PER_BLOCK * (exec::block_timestamp() - blocks_since_last_play / 1000));
 
-        self.fed = self.fed.saturating_sub(hunger_increase as u32);
-        self.rested = self.rested.saturating_sub(energy_decrease as u32);
-        self.happy = self.happy.saturating_sub(boredom_increase as u32);
+        self.fed = if self.fed > MAX_VALUE {
+            MAX_VALUE
+        } else {
+            self.fed
+        };
+
+        self.rested = if self.rested > MAX_VALUE {
+            MAX_VALUE
+        } else {
+            self.rested
+        };
+
+        self.happy = if self.happy > MAX_VALUE {
+            MAX_VALUE
+        } else {
+            self.happy
+        };
     }
 
     fn set_ftoken_contract(&mut self, ft_contract_id: ActorId) {
@@ -115,35 +135,14 @@ impl Tamagotchi {
     }
 }
 
-#[no_mangle]
-extern "C" fn init() {
-    let tname = String::from_utf8(msg::load_bytes().expect("Can't load init message"))
-        .expect("Invalid message");
-    let character = Tamagotchi {
-        owner: msg::source(),
-        name: tname,
-        date_of_birth: block_timestamp(),
-        fed: FILL_PER_FEED,
-        happy: FILL_PER_ENTERTAINMENT,
-        rested: FILL_PER_SLEEP,
-        last_sleep: block_timestamp(),
-        last_feed: block_timestamp(),
-        last_play: block_timestamp(),
-        approved_account: None,
-        ..Default::default()
-    };
-    unsafe { TAMAGOCHI = Some(character) };
-}
-
 #[gstd::async_main]
 async fn main() {
-    let inquery: TmgAction = msg::load().expect("Error in handling msg");
-    let character: &mut Tamagotchi =
-        unsafe { TAMAGOCHI.as_mut().expect("The contract is not initialized") };
+    let action: TmgAction = msg::load().expect("Error in handling msg");
+    let character: &mut Tamagotchi = unsafe { TAMAGOCHI.get_or_insert(Default::default()) };
 
     character.update_states();
 
-    match inquery {
+    match action {
         TmgAction::Age => {
             msg::reply(
                 TmgEvent::Age(block_timestamp() - character.date_of_birth),
@@ -201,6 +200,27 @@ async fn main() {
             attribute_id,
         } => character.buy_attribute(store_id, attribute_id).await,
     }
+}
+
+#[no_mangle]
+unsafe extern "C" fn init() {
+    let name: String = msg::load().expect("Can't load init message");
+    let current_block = exec::block_timestamp();
+
+    let character = Tamagotchi {
+        owner: msg::source(),
+        name,
+        date_of_birth: current_block,
+        fed: MAX_VALUE,
+        happy: MAX_VALUE,
+        rested: MAX_VALUE,
+        last_sleep: current_block,
+        last_feed: current_block,
+        last_play: current_block,
+        approved_account: None,
+        ..Default::default()
+    };
+    TAMAGOCHI = Some(character);
 }
 
 #[no_mangle]
